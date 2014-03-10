@@ -13,3 +13,5 @@ shptest
 *.la
 *.lo
 .libs
+
+README.html

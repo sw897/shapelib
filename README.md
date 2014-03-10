@@ -1,5 +1,9 @@
 
-Please read shapelib.html.
+#shapelib
+
+Shapefile C Library (origin at http://shapelib.maptools.org)
+
+---
 
 Building on Unix
 ----------------
@@ -27,6 +31,7 @@ Utility/demonstration programs:
 4) To libshp.a and the test binaries in /usr/local:
   make install 
 
+---
 
 Building on Windows
 -------------------
