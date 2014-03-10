@@ -12,6 +12,7 @@ shptest
 *.exp
 *.la
 *.lo
+*.o
+*.a
 .libs
-
-README.html
+*.plist
