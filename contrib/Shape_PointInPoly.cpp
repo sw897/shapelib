@@ -1,5 +1,5 @@
 /******************************************************************************
- * $Id: Shape_PointInPoly.cpp,v 1.1 2004-01-09 16:47:57 fwarmerdam Exp $
+ * $Id: Shape_PointInPoly.cpp,v 1.2 2016-12-05 12:44:07 erouault Exp $
  *
  * Project:  Shapelib
  * Purpose:  Commandline program to generate points-in-polygons from a 
@@ -10,7 +10,7 @@
  * Copyright (c) 2004, Marko Podgorsek, d-mon@siol.net
  *
  * This software is available under the following "MIT Style" license,
- * or at the option of the licensee under the LGPL (see LICENSE.LGPL).  This
+ * or at the option of the licensee under the LGPL (see COPYING).  This
  * option is discussed in more detail in shapelib.html.
  *
  * --
@@ -35,13 +35,18 @@
  ******************************************************************************
  *
  * $Log: Shape_PointInPoly.cpp,v $
+ * Revision 1.2  2016-12-05 12:44:07  erouault
+ * * Major overhaul of Makefile build system to use autoconf/automake.
+ *
+ * * Warning fixes in contrib/
+ *
  * Revision 1.1  2004-01-09 16:47:57  fwarmerdam
  * New
  *
  */
 
 static char rcsid[] = 
-  "$Id: Shape_PointInPoly.cpp,v 1.1 2004-01-09 16:47:57 fwarmerdam Exp $";
+  "$Id: Shape_PointInPoly.cpp,v 1.2 2016-12-05 12:44:07 erouault Exp $";
 
 #include <string.h>
 #include <stdlib.h>

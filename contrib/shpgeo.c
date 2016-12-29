@@ -32,6 +32,28 @@
  * use -DPROJ4 to compile in Projection support
  *
  * $Log: shpgeo.c,v $
+ * Revision 1.15  2016-12-06 21:13:33  erouault
+ * * configure.ac: change soname to 2:1:0 to be in sync with Debian soname.
+ * http://bugzilla.maptools.org/show_bug.cgi?id=2628
+ * Patch by Bas Couwenberg
+ *
+ * * contrib/doc/Shape_PointInPoly_README.txt, contrib/shpgeo.c: typo fixes.
+ * http://bugzilla.maptools.org/show_bug.cgi?id=2629
+ * Patch by Bas Couwenberg
+ *
+ * * web/*: use a local .css file to avoid a privacy breach issue reported
+ * by the lintian QA tool.
+ * http://bugzilla.maptools.org/show_bug.cgi?id=2630
+ * Patch by Bas Couwenberg
+ *
+ *
+ * Contributed by Sandro Mani: https://github.com/manisandro/shapelib/tree/autotools
+ *
+ * Revision 1.14  2016-12-05 12:44:07  erouault
+ * * Major overhaul of Makefile build system to use autoconf/automake.
+ *
+ * * Warning fixes in contrib/
+ *
  * Revision 1.13  2011-07-24 03:17:46  fwarmerdam
  * include string.h and stdlib.h where needed in contrib (#2146)
  *
@@ -72,11 +94,8 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "shapefil.h"
-
-#ifndef NAN
-#include "my_nan.h"
-#endif
 
 #include "shpgeo.h"
 
@@ -205,7 +224,14 @@ projPJ SHPSetProjection ( int param_cnt, char **params ) {
   projPJ	*p = NULL;
 
   if ( param_cnt > 0 && params[0] )
-  { p = pj_init ( param_cnt, params ); }
+  {
+      p = pj_init ( param_cnt, params );
+  }
+  else
+  {
+      char* params_local[] = { "+proj=longlat", NULL };
+      p = pj_init ( 1, params_local );
+  }
 
   return ( p );
 #else
@@ -335,7 +361,7 @@ int	use_M = 0;
  * **************************************************************************/
 int SHPWriteSHPStream ( WKBStreamObj *stream_obj, SHPObject *psCShape ) {
 
-int	obj_storage = 0;
+/*int	obj_storage = 0;*/
 int	need_swap = 0, my_order, GeoType;
 int	use_Z = 0;
 int	use_M = 0;
@@ -343,7 +369,7 @@ int	use_M = 0;
   need_swap = 1;
   need_swap = ((char*) (&need_swap))[0];
   
-  realloc (stream_obj, obj_storage );
+  /*realloc (stream_obj, obj_storage );*/
   
   if ( need_swap ) {
   
@@ -479,9 +505,9 @@ int SHPWriteOGisWKB ( WKBStreamObj* stream_obj, SHPObject *psCShape ) {
   
  #ifdef DEBUG2
    printf (" I just allocated %d bytes to wkbObj \n", 
-  	sizeof (int) + sizeof (int) + sizeof(int) +
+  	(int)(sizeof (int) + sizeof (int) + sizeof(int) +
         ( sizeof(int) * psCShape->nParts + 1 ) +
-  	( sizeof(double) * 2 * psCShape->nVertices ) + 10 );
+  	( sizeof(double) * 2 * psCShape->nVertices ) + 10) );
  #endif 
  
   my_order = 1;
@@ -499,7 +525,7 @@ int SHPWriteOGisWKB ( WKBStreamObj* stream_obj, SHPObject *psCShape ) {
   WKBStreamWrite ( stream_obj, & LSB, 1, sizeof(char) );
   
   #ifdef DEBUG2
-    printf ("this system in (%d) LSB \n");
+    printf ("this system in LSB \n");
   #endif
 
   
@@ -1450,7 +1476,7 @@ SHPObject* SHPClone ( SHPObject *psCShape, int lowPart, int highPart ) {
 	highPart = psCShape->nParts ;
 
 #ifdef DEBUG
-    printf (" cloning SHP (%d parts) from ring %d upto ring %d \n",
+    printf (" cloning SHP (%d parts) from ring %d to ring %d \n",
 	 psCShape->nParts, lowPart, highPart);
 #endif
 
