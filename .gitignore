@@ -16,3 +16,5 @@ shptest
 *.a
 .libs
 *.plist
+*.exe
+*.obj
